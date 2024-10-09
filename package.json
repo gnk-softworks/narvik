@@ -1,0 +1,44 @@
+{
+  "name": "narvik",
+  "version": "0.2.0",
+  "description": "A simple, session based authentication library",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnk-softworks/narvik.git"
+  },
+  "keywords": [
+    "narvik",
+    "narvik-auth",
+    "authentication",
+    "auth",
+    "nextjs",
+    "nextjs auth",
+    "lucia",
+    "session",
+    "sessions",
+    "cookie",
+    "cookies"
+  ],
+  "author": "Kawba",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/gnk-softworks/narvik/issues"
+  },
+  "homepage": "https://github.com/gnk-softworks/narvik#readme",
+  "dependencies": {
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
