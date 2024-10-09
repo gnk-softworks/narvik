@@ -1,0 +1,21 @@
+{
+  "name": "Narvik",
+  "description": "A simple, session based server side authentication library",
+  "domain": "https://narvik-auth.com",
+
+  "sidebar": [
+    {
+      "title": "Getting Started",
+      "pages": [
+        ["Setup", "/getting-started/setup"]
+      ]
+    },
+    {
+      "title": "Miscellaneous",
+      "pages": [
+        ["Contributing", "/contributing"]
+      ]
+    }
+  ],
+  "asset_hashing": true
+}
