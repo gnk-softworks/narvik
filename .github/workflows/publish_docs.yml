@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: change directory
-        run: cd docs
+        run: cd ./docs
       - name: setup actions
         uses: actions/checkout@v3
       - name: install malta
