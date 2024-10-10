@@ -36,17 +36,16 @@ jobs:
         run: npm run build
 
       - name: Publish to NPM
-        run: npm publish
+        run: npm publish --no-git-tag-version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit version bump
         run: |
           git add package.json package-lock.json
-          git commit -m "ci: bump version to $(npm pkg get version | tr -d '\n')"
+          git commit -m "ci: publish version $(npm pkg get version | tr -d '\n')"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Step 8: Prevent recursive builds
-    if: "!contains(github.event.head_commit.message, 'ci: bump version')"
+    if: "!contains(github.event.head_commit.message, 'ci: publish version')"
