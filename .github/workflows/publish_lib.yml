@@ -19,6 +19,11 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org/'
 
+      - name: Set Git user
+        run: |
+          git config user.name "narvik-publish-action"
+          git config user.email "narvik-publish-action@narvik-auth.com"
+
       - name: Bump version
         run: npm version patch
         env:
@@ -37,8 +42,6 @@ jobs:
 
       - name: Commit version bump
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json
           git commit -m "ci: bump version to $(npm pkg get version | tr -d '\n')"
           git push
