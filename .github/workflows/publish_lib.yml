@@ -25,7 +25,7 @@ jobs:
           git config user.email "narvik-publish-action@narvik-auth.com"
 
       - name: Bump version
-        run: npm version patch
+        run: npm version patch --no-git-tag-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -36,7 +36,7 @@ jobs:
         run: npm run build
 
       - name: Publish to NPM
-        run: npm publish --no-git-tag-version
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
