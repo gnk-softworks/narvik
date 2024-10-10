@@ -40,6 +40,7 @@ async function validate(
     if (Date.now() >= session.expiresAt.getTime() - (sessionExpiresInMs / 2)) {
         session.expiresAt = new Date(Date.now() + sessionExpiresInMs);
         await updateSessionExpiry(sessionId, session.expiresAt);
+        session.extended = true;
     }
     return session;
 }

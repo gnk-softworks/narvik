@@ -1,0 +1,37 @@
+{
+  "name": "Narvik",
+  "description": "A simple, session based server side authentication library",
+  "domain": "https://narvik-auth.com",
+
+  "sidebar": [
+    {
+      "title": "Getting Started",
+      "pages": [
+        ["Setup", "/getting-started/setup"],
+        ["Usage", "/getting-started/usage"]
+      ]
+    },
+    {
+      "title": "Reference Docs",
+      "pages": [
+        ["Sessions", "/documentation/sessions"],
+        ["Cookies", "/documentation/cookies"],
+        ["Session Storage", "/documentation/session-storage"]
+      ]
+    },
+    {
+      "title": "Guides",
+      "pages": [
+        ["Migrate from Lucia (Coming Soon)", "/guides/lucia"],
+        ["NextJS (Coming Soon)", "/guides/NextJS"]
+      ]
+    },
+    {
+      "title": "Miscellaneous",
+      "pages": [
+        ["Contributing", "/contributing"]
+      ]
+    }
+  ],
+  "asset_hashing": true
+}

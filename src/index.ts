@@ -35,6 +35,7 @@ export interface Session {
     userId: string;
     expiresAt: Date;
     new?: boolean;
+    extended?: boolean;
 }
 
 export interface Cookie {
