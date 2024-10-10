@@ -7,7 +7,16 @@
     {
       "title": "Getting Started",
       "pages": [
-        ["Setup", "/getting-started/setup"]
+        ["Setup", "/getting-started/setup"],
+        ["Usage", "/getting-started/usage"]
+      ]
+    },
+    {
+      "title": "Documentation",
+      "pages": [
+        ["Sessions", "/documentation/sessions"],
+        ["Cookies", "/documentation/cookies"],
+        ["Session Storage", "/documentation/session-storage"]
       ]
     },
     {

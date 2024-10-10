@@ -5,17 +5,19 @@ title: "Getting Started - Setup"
 # Getting Started - Setup
 
 ## Installation
+
+To install Narvik from NPM, run:
+
 ```bash
 npm i narvik
 ```
 
-## Usage
+## Configuration
 
-### Configuration
+The basic configuration requires only that you provide functions for managing session data in you data store. For more information on these callbacks, see the [Session Storage](/documentation/session-storage) page.
 
-The basic configuration requires only that you provide functions for managing session data in you data store.
 ```ts
-const narvik = new Narvik({
+export const narvik = new Narvik({
     data: {
         saveSession: async (session: Session): Promise<void> => {
             // Save the session to your database
@@ -35,7 +37,7 @@ const narvik = new Narvik({
 
 You can also provide additional configuration options for sessions and cookies.
 ```ts
-const narvik = new Narvik({
+export const narvik = new Narvik({
     data: {
         //as above
     },
@@ -45,7 +47,7 @@ const narvik = new Narvik({
     cookie: { //Optional - Cookie configuration
         name: "your-app-session", //Optional - Session cookie name. Default is "narvik_session"
         attributes: {
-            secure: true, //Optional - Secure attribute. Default is true
+            secure: true, //Optional - Default true - set to true for https, set to false for http
             domain: "example.com", //Optional - Domain attribute. Default is not set
             path: "/", //Optional - Path attribute. Default is "/"
             sameSite: "lax", //Optional - SameSite attribute. Default is "lax"
@@ -56,30 +58,4 @@ const narvik = new Narvik({
 
 
 
-
-### Usage
-```ts
-//Your user who has passed authentication
-const authenticatedUser = {
-    id: "123",
-    name: "John Smith",
-    email: "john.smith@your-app-name.com"
-};
-
-//Create a new session for the authenticated user
-const createSessionReult = await narvik.createSession(authenticatedUser.id);
-
-//Create a cookie to store the session
-const cookie = narvik.createSessionCookie(createSessionReult.token);
-cookies().set(cookie.name, cookie.value, cookie.attributes);
-
-//Fetch the session from the database
-const sessionToken = cookies().get(narvik.cookieName)?.value ?? null;
-if(!sessionToken) {
-    // Do something if the session is not found
-}
-const validatedSession = await narvik.validateSession(sessionToken); //Returns Session if valid or null if session is invalid
-
-//Create a blank cookie to clear the session
-const blankCookie = narvik.createBlankSessionCookie();
-```
+#### [Next Section: Usage](/getting-started/usage)
