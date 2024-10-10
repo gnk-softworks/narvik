@@ -12,11 +12,18 @@
       ]
     },
     {
-      "title": "Documentation",
+      "title": "Reference Docs",
       "pages": [
         ["Sessions", "/documentation/sessions"],
         ["Cookies", "/documentation/cookies"],
         ["Session Storage", "/documentation/session-storage"]
+      ]
+    },
+    {
+      "title": "Guides",
+      "pages": [
+        ["Migrate from Lucia (Coming Soon)", "/guides/lucia"],
+        ["NextJS (Coming Soon)", "/guides/NextJS"]
       ]
     },
     {

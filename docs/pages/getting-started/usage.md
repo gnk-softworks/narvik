@@ -29,7 +29,7 @@ const cookie = narvik.createSessionCookie(createSessionReult.token);
 ```ts
 //Fetch the session cookie from the request. Use the cookie name stored in narvik.cookieName
 if(!sessionToken) {
-    // Do something if the session is not found
+    // Do something if the session token is not found in cookie
 }
 const validatedSession = await narvik.validateSession(sessionToken); //Returns Session if valid or null if session is invalid
 ```
