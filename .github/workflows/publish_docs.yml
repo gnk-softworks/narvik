@@ -23,8 +23,8 @@ jobs:
       - name: build
         working-directory: ./docs
         run: ../linux-amd64/malta build
-      - name: upload pages artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./docs/dist
 
@@ -37,4 +37,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
