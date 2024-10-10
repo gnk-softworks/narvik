@@ -4,7 +4,7 @@
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Introduction
-Narvik is an authentication library offering a simple API for managing sessions, independent of your chosen database setup. Built with TypeScript and released under the CC0 license, it provides flexibility and simplicity in handling authentication workflows.
+Narvik is a server side authentication library offering a simple API for managing sessions, independent of your chosen database setup. Built with TypeScript and released under the CC0 license, it provides flexibility and simplicity in handling authentication workflows.
 
 Although developed from scratch, Narvik draws inspiration from version 3 of the Lucia authentication library (https://lucia-auth.com), incorporating several ideas and tools developed by @PilcrowOnPaper.
 
@@ -92,10 +92,11 @@ const blankCookie = narvik.createBlankSessionCookie();
 ```
 
 ## Further documentation an examples
-We are working on further documentation and examples. Please check back soon.
+For more information on how to use Narvik, please refer to the [documentation](https://narvik-auth.com).
 
 ## Features coming soon
 - [ ] Extend session interface to allow for custom attributes
+- [ ] Add ability to set session cookie to not expire
 
 ## Contributions
 If you want to improve the library, please create a pull request.

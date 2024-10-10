@@ -1,3 +1,5 @@
 /src
+/docs
+/.github
 /dist/**/*.map
 *.log
