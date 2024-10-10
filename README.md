@@ -92,10 +92,11 @@ const blankCookie = narvik.createBlankSessionCookie();
 ```
 
 ## Further documentation an examples
-We are working on further documentation and examples. Please check back soon.
+For more information on how to use Narvik, please refer to the [documentation](https://narvik-auth.com).
 
 ## Features coming soon
 - [ ] Extend session interface to allow for custom attributes
+- [ ] Add ability to set session cookie to not expire
 
 ## Contributions
 If you want to improve the library, please create a pull request.
