@@ -25,6 +25,10 @@ jobs:
       - name: Run Coverage Script
         run: npm run coverage
 
+      - name: Markdownize Istanbul report
+        run: |
+          sed -i -e '1{/^----/d}; ${/^----/d}' ./coverage/report.txt
+
       - name: Comment Coverage on PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
