@@ -22,7 +22,8 @@ jobs:
       - name: Set Git user
         run: |
           git config user.name "narvik-publish-action"
-          git config user.email "narvik-publish-action@narvik-auth.com"
+          # https://api.github.com/users/github-actions%5Bbot%5D
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version
         run: npm version patch --no-git-tag-version
