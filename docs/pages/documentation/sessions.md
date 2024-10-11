@@ -42,7 +42,7 @@ The session’s expiresAt field is automatically extended with each use, ensurin
 export const narvik = new Narvik({
     data: {}, //data configuration
     session: { //Optional - Session configuration 
-        sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session lenth in ms. Default is 30 Days - here value is 1 week
+        sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session length in ms. Default is 30 Days - here value is 1 week
     },
     cookie: {} //Optional cookie configuration
 });
