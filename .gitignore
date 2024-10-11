@@ -7,3 +7,4 @@
 # misc
 .DS_Store
 /.idea
+/coverage

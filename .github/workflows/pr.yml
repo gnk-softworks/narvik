@@ -1,0 +1,32 @@
+name: PR Coverage Report
+
+on:
+  pull_request: # This will trigger the action on any pull request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Build
+        run: npm run build
+
+      - name: Run Coverage Script
+        run: npm run coverage
+
+      - name: Comment Coverage on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./coverage/report.txt
