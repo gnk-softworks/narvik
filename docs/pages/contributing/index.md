@@ -17,7 +17,7 @@ Narvik is an open-source project under a cc0 license, and we welcome any contrib
    - Features: Before any new feature is merged it must be approved by maintainers in GitHub Issues. We will review and approve features based on their complexity and alignment with the project goals.
 
 ## Become a Maintainer
-If you are interested in becoming a maintainer for the project, please make a number of contributions to the project first then reach out.
+If you are interested in becoming a maintainer for the project, please make a number of contributions to the project first then reach out on the Discord server to express your interest.
 
 ## Code of Conduct
 Don't be a jerk. We are all here to learn and improve the project. Please be respectful of others and their contributions.
@@ -25,3 +25,4 @@ Don't be a jerk. We are all here to learn and improve the project. Please be res
 ## Useful Links
 - [GitHub Repository](https://github.com/gnk-softworks/narvik)
 - [NPM Package](https://www.npmjs.com/package/narvik)
+- [Discord](https://discord.gg/y2WGpuwztV)
