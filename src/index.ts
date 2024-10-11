@@ -69,8 +69,7 @@ export class Narvik {
 
     constructor(config: NarvikConfiguration) {
         this.data = config.data;
-
-        this.sessionExpiresInMs = config?.session?.sessionExpiresInMs ?? 3369600000;
+        this.sessionExpiresInMs = config?.session?.sessionExpiresInMs ?? 2592000000;
         this.cookieName = config?.cookie?.name ?? "narvik_session";
         this.coreCookieAttributes = {
             httpOnly: true,
@@ -95,8 +94,8 @@ export class Narvik {
         return await sessions.invalidate(sessionId, this.data.deleteSession);
     }
 
-    public createCookie(sessionId: string): Cookie {
-        return cookies.create(this.cookieName, sessionId, this.coreCookieAttributes, this.sessionExpiresInMs);
+    public createCookie(sessionToken: string): Cookie {
+        return cookies.create(this.cookieName, sessionToken, this.coreCookieAttributes, this.sessionExpiresInMs);
     }
 
     public createBlankCookie(): Cookie {
