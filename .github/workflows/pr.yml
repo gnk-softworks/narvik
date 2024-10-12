@@ -26,6 +26,7 @@ jobs:
         run: npm run coverage
 
       - name: Comment Coverage on PR
+        if: ${{ ! github.event.pull_request.head.repo.fork }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
