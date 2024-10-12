@@ -1,5 +1,5 @@
 import sessions from "./session.js";
-import cookies, {serialize} from "./cookie.js";
+import cookies from "./cookie.js";
 import {generateRandomToken} from "./token.js";
 
 export interface NarvikConfiguration {
