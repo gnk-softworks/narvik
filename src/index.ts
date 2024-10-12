@@ -1,5 +1,5 @@
 import sessions from "./session.js";
-import cookies from "./cookie.js";
+import cookies, {serialize} from "./cookie.js";
 import {generateRandomToken} from "./token.js";
 
 export interface NarvikConfiguration {
@@ -38,10 +38,20 @@ export interface Session {
     extended?: boolean;
 }
 
-export interface Cookie {
-    name: string;
-    value: string;
-    attributes: CookieAttributes;
+export class Cookie {
+    public name: string;
+    public value: string;
+    public attributes: CookieAttributes;
+
+    constructor(name: string, value: string, attributes: CookieAttributes) {
+        this.name = name;
+        this.value = value;
+        this.attributes = attributes;
+    }
+
+    public serialize(): string {
+        return cookies.serialize(this.name, this.value, this.attributes);
+    }
 }
 
 export interface CookieAttributes {
