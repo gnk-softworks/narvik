@@ -23,7 +23,7 @@ npm i narvik
 
 ### Configuration
 
-The basic configuration requires only that you provide functions for managing session data in you data store.  
+The basic configuration requires only that you provide functions for managing session data in you data store.
 ```ts
 const narvik = new Narvik({
     data: {
@@ -43,17 +43,18 @@ const narvik = new Narvik({
 });
 ```
 
-You can also provide additional configuration options for sessions and cookies.  
+You can also provide additional configuration options for sessions and cookies.
 ```ts
 const narvik = new Narvik({
     data: {
         //as above
     },
-    session: { //Optional - Session configuration 
+    session: { //Optional - Session configuration
         sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session length in ms. Default is 30 Days - here value is 1 week
     },
     cookie: { //Optional - Cookie configuration
         name: "your-app-session", //Optional - Session cookie name. Default is "narvik_session"
+        cookieExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired cookie length in ms. Default is same as "sessionExpiresInMs" - here value is 1 week
         attributes: {
             secure: true, //Optional - Secure attribute. Default is true
             domain: "example.com", //Optional - Domain attribute. Default is not set
