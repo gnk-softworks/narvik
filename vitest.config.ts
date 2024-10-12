@@ -6,6 +6,7 @@ export default defineConfig({
         coverage: {
             provider: 'istanbul', // Use Istanbul for coverage
             reporter: [
+                'text', // Output coverage to console
                 ['text', { file: 'report.txt' }], // Output coverage to coverage.txt
             ],
             reportsDirectory: 'coverage',

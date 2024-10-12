@@ -20,13 +20,21 @@ const blankCookie = narvik.createBlankSessionCookie();
 ## Cookie Object
 The cookie object is a straightforward structure containing a name, value, and attributes, which can be used to set a cookie. The attributes mirror those available when setting cookies.
 
-Note: A serialize function will be added to the cookie object in the future, simplifying the process of setting cookies outside of your framework.
-
 ```ts
-export interface Cookie {
-    name: string;
-    value: string;
-    attributes: CookieAttributes;
+export class Cookie {
+    public name: string;
+    public value: string;
+    public attributes: CookieAttributes;
+
+    constructor(name: string, value: string, attributes: CookieAttributes) {
+        this.name = name;
+        this.value = value;
+        this.attributes = attributes;
+    }
+
+    public serialize(): string {
+        return cookies.serialize(this.name, this.value, this.attributes);
+    }
 }
 
 export interface CookieAttributes {
@@ -37,4 +45,13 @@ export interface CookieAttributes {
     sameSite?: "none" | "lax" | "strict";
     maxAge?: number;
 }
+```
+
+The `serialize` method is used to convert the cookie object into a string that can be set as a cookie using 'Set-Cookie' headers.
+```ts
+const cookie = narvik.createSessionCookie(sessionToken);
+const cookieString = cookie.serialize();
+
+// Set the cookie in the response headers
+res.setHeader('Set-Cookie', cookieString);
 ```

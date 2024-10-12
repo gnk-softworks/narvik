@@ -24,6 +24,9 @@ test('Create blank cookie with default config', async () => {
     expect(result.attributes.path).toBeUndefined
     expect(result.attributes.sameSite).toBe('lax')
     expect(result.attributes.maxAge).toBe(0);
+
+    const serializedValue = result.serialize()
+    expect(serializedValue).toBe(`narvik_session=; Max-Age=0; Path=/; SameSite=Lax; Secure; HttpOnly`)
 })
 
 test('Create blank cookie with custom configuration', async () => {
@@ -61,4 +64,7 @@ test('Create blank cookie with custom configuration', async () => {
     expect(result.attributes.path).toBe(config.cookie.attributes.path)
     expect(result.attributes.sameSite).toBe(config.cookie.attributes.sameSite)
     expect(result.attributes.maxAge).toBe(0);
+
+    const serializedValue = result.serialize()
+    expect(serializedValue).toBe(`example-cookie=; Domain=example.com; Max-Age=0; Path=/example; SameSite=None; HttpOnly`)
 })
