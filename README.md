@@ -100,3 +100,6 @@ If you have a feature request or have found a bug, please create an issue on the
 
 ## Contributions
 If you want to contribute to the project please see the [contributing guide](https://narvik-auth.com/contributing).
+
+## Community
+Join the Narvik community on [Discord](https://discord.gg/y2WGpuwztV).

@@ -13,6 +13,9 @@ export interface NarvikDataConfiguration {
     fetchSession: (sessionId: string) => Promise<Session | null>;
     updateSessionExpiry: (sessionId: string, updateExpiresAt: Date) => Promise<void>;
     deleteSession: (sessionId: string) => Promise<void>;
+    fetchSessionsForUser?: (userId: string) => Promise<Session[]>;
+    deleteSessionsForUser?: (userId: string) => Promise<void>;
+    deleteAllExpiredSessions?: () => Promise<void>;
 }
 
 export interface NarvikSessionConfiguration {
@@ -106,6 +109,27 @@ export class Narvik {
 
     public async invalidateSession(sessionId: string): Promise<void> {
         return await sessions.invalidate(sessionId, this.data.deleteSession);
+    }
+
+    public async fetchSessionsForUser(userId: string): Promise<Session[]> {
+        if (!this.data.fetchSessionsForUser) {
+            throw new Error("fetchSessionsForUser callback provided in configuration");
+        }
+        return await this.data.fetchSessionsForUser(userId);
+    }
+
+    public async deleteSessionsForUser(userId: string): Promise<void> {
+        if (!this.data.deleteSessionsForUser) {
+            throw new Error("deleteSessionsForUser callback provided in configuration");
+        }
+        return await this.data.deleteSessionsForUser(userId);
+    }
+
+    public async deleteAllExpiredSessions(): Promise<void> {
+        if (!this.data.deleteAllExpiredSessions) {
+            throw new Error("deleteAllExpiredSessions callback provided in configuration");
+        }
+        return await this.data.deleteAllExpiredSessions();
     }
 
     public createCookie(sessionToken: string): Cookie {
