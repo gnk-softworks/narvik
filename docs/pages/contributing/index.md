@@ -11,8 +11,9 @@ Narvik is an open-source project under a cc0 license, and we welcome any contrib
 1. Create an issue on the GitHub repository with a description of the problem or feature you would like to add.
 2. The "next" branch is the development branch for the project. Please use this branch as the base for your changes.
 3. Make your proposed changes.
-4. Create a pull request back into the "next" branch.
-5. A Maintainer will review your changes and merge them into the "next" branch if approved.
+4. Ensure change is tested. We have a commitment to 100% test coverage in the core library and would expect any contributions to meet this standard. No Exceptions. No Pull Request will be merged without tests.
+5. Create a pull request back into the "next" branch.
+6. A Maintainer will review your changes and merge them into the "next" branch if approved.
    - Bug Fixes: We will endeavour to approve, merge and release any bug fixes quickly.
    - Features: Before any new feature is merged it must be approved by maintainers in GitHub Issues. We will review and approve features based on their complexity and alignment with the project goals.
 
