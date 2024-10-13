@@ -41,7 +41,7 @@ export const narvik = new Narvik({
     data: {
         //as above
     },
-    session: { //Optional - Session configuration 
+    session: { //Optional - Session configuration
         sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session length in ms. Default is 30 Days - here value is 1 week
     },
     cookie: { //Optional - Cookie configuration
@@ -55,7 +55,5 @@ export const narvik = new Narvik({
     }
 });
 ```
-
-
 
 #### [Next Section: Usage](/getting-started/usage)
