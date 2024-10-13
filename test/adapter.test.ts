@@ -1,258 +1,137 @@
-import { expect, test } from 'vitest'
-import {encodeHexLowerCase} from "@oslojs/encoding";
-import {sha256} from "@oslojs/crypto/sha2";
-import {Narvik, Session} from "../src";
-import {
-    defaultDeleteSession,
-    defaultFetchSession,
-    defaultSaveSession,
-    defaultUpdateSessionExpiry
-} from "./data/config/defaultSessionFunctions.js";
+/*
+This test serves as an example of how to create an adapter for the Narvik
+library. The adapter is designed to store session data in memory and implements
+the NarvikDataConfiguration interface, which defines the required methods for
+interacting with the session data store. A Map is used by the adapter to manage
+session data in memory. The `numberOfSessions` method is only used for testing purposes.
+ */
 
-test('Create session with default session expiry configuration', async () => {
-    const userId = 'userId';
-    let sessionExpiry = 2592000000; // 30 days - default
+import {assert, expect, test} from 'vitest'
+import {Narvik, NarvikDataConfiguration, Session} from "../src";
 
-    let sessionId = '';
-    let expiresAt = undefined
+class TestInMemoryDatastoreAdapter implements NarvikDataConfiguration {
+    private sessions: Map<string, Session> = new Map<string, Session>();
 
-    const saveSessionFunction = async (session: Session): Promise<void> => {
-        expect(session).toBeDefined();
-        expect(session.id).toBeDefined();
-        sessionId = session.id;
-        expect(session.userId).toBe(userId);
-        expect(session.expiresAt).toBeDefined();
-        expect(session.expiresAt.getTime() - Date.now()).toBeGreaterThan(sessionExpiry - 10000);
-        expect(session.expiresAt.getTime() - Date.now()).toBeLessThanOrEqual(sessionExpiry);
-        expiresAt = session.expiresAt;
-
-        /*
-        These are undefined because they are not saved in the session.
-        They are only used to indicate the state of the session as it is created or updated.
-         */
-        expect(session.new).toBeUndefined();
-        expect(session.extended).toBeUndefined();
+    saveSession = async (session: Session): Promise<void> => {
+        this.sessions.set(session.id, session);
     }
 
-    const narvik = new Narvik({
-        data: {
-            saveSession: saveSessionFunction,
-            fetchSession: defaultFetchSession,
-            updateSessionExpiry: defaultUpdateSessionExpiry,
-            deleteSession: defaultDeleteSession
-        }
-    });
+    fetchSession = async (sessionId: string): Promise<Session | null> => {
+        return this.sessions.get(sessionId) ?? null;
+    }
 
-    const result = await narvik.createSession(userId);
-    expect(result).toBeDefined();
-    expect(result.token).toBeDefined();
-    expect(result.session).toBeDefined();
-    expect(result.session.new).toBe(true);
-    expect(result.session.id).toBe(encodeHexLowerCase(sha256(new TextEncoder().encode(result.token))));
-    expect(result.session.userId).toBe(userId);
-    expect(result.session.expiresAt).toBe(expiresAt);
+    updateSessionExpiry = async (sessionId: string, updatedExpiresAt: Date): Promise<void> =>{
+        const session = this.sessions.get(sessionId);
+        if (session) {
+            session.expiresAt = updatedExpiresAt;
+        }
+    }
+
+    deleteSession = async (sessionId: string): Promise<void> =>{
+        this.sessions.delete(sessionId);
+    }
+
+    fetchSessionsForUser = async (userId: string): Promise<Session[]> =>{
+        return Array.from(this.sessions.values()).filter(session => session.userId === userId);
+    }
+
+    deleteSessionsForUser = async (userId: string): Promise<void> => {
+        const sessions = Array.from(this.sessions.values()).filter(session => session.userId === userId);
+        sessions.forEach(session => this.sessions.delete(session.id));
+    }
+
+    deleteAllExpiredSessions = async (): Promise<void> => {
+        const now = new Date();
+        const sessions = Array.from(this.sessions.values()).filter(session => session.expiresAt < now);
+        sessions.forEach(session => this.sessions.delete(session.id));
+    }
+
+    //helper functions for testing
+    numberOfSessions(): number {
+        return this.sessions.size;
+    }
+}
+
+const adapter = new TestInMemoryDatastoreAdapter();
+const narvik = new Narvik({
+    data: adapter,
+    session: {
+        sessionExpiresInMs: 7 * 24 * 60 * 60 * 1000
+    }
+});
+
+
+test('Validate basic functions', async () => {
+
+    const authenticatedUser = {
+        id: 'userId',
+    }
+
+    expect(narvik).toBeDefined();
+    expect(adapter.numberOfSessions()).toBe(0);
+
+    const createResult = await narvik.createSession(authenticatedUser.id);
+    expect(adapter.numberOfSessions()).toBe(1);
+    expect(createResult.token).toBeDefined();
+    expect(createResult.session).toBe(await adapter.fetchSession(createResult.session.id));
+
+    const validateSession = await narvik.validateSession(createResult.token);
+    assert(validateSession !== null);
+    expect(validateSession).toBe(await adapter.fetchSession(validateSession.id));
+
+    const updatedExpiry = new Date();
+    updatedExpiry.setDate(updatedExpiry.getDate() + 1);
+    await adapter.updateSessionExpiry(validateSession.id, updatedExpiry);
+
+    const revalidateSession = await narvik.validateSession(createResult.token);
+    assert(revalidateSession !== null);
+    expect(revalidateSession).toBe(await adapter.fetchSession(revalidateSession.id));
+    expect(revalidateSession.expiresAt.getTime()).toBeGreaterThan( Date.now() + 7 * 24 * 60 * 60 * 1000 - 10000);
+    expect(revalidateSession.expiresAt.getTime()).toBeLessThanOrEqual( Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    await narvik.invalidateSession(createResult.session.id);
+    expect(adapter.numberOfSessions()).toBe(0);
 })
 
-test('Create session with custom session expiry configuration', async () => {
-    const userId = 'userId';
-    const sessionExpiry = 1000 * 60 * 60 * 24 * 7; // 7 days
+test('Validate Fetch and Delete all sessions for users', async () => {
 
-    let sessionId = '';
-    let expiresAt = undefined
-
-    const saveSessionFunction = async (session: Session): Promise<void> => {
-        expect(session).toBeDefined();
-        expect(session.id).toBeDefined();
-        sessionId = session.id;
-        expect(session.userId).toBe(userId);
-        expect(session.expiresAt).toBeDefined();
-        expect(session.expiresAt.getTime() - Date.now()).toBeGreaterThan(sessionExpiry - 10000);
-        expect(session.expiresAt.getTime() - Date.now()).toBeLessThanOrEqual(sessionExpiry);
-        expiresAt = session.expiresAt;
-
-        /*
-        These are undefined because they are not saved in the session.
-        They are only used to indicate the state of the session as it is created or updated.
-         */
-        expect(session.new).toBeUndefined();
-        expect(session.extended).toBeUndefined();
+    const authenticatedUser = {
+        id: 'userId',
     }
 
-    const narvik = new Narvik({
-        data: {
-            saveSession: saveSessionFunction,
-            fetchSession: defaultFetchSession,
-            updateSessionExpiry: defaultUpdateSessionExpiry,
-            deleteSession: defaultDeleteSession
-        },
-        session: {
-            sessionExpiresInMs: sessionExpiry
-        }
-    });
+    expect(narvik).toBeDefined();
+    expect(adapter.numberOfSessions()).toBe(0);
 
-    const result = await narvik.createSession(userId);
-    expect(result).toBeDefined();
-    expect(result.token).toBeDefined();
-    expect(result.session).toBeDefined();
-    expect(result.session.new).toBe(true);
-    expect(result.session.id).toBe(encodeHexLowerCase(sha256(new TextEncoder().encode(result.token))));
-    expect(result.session.userId).toBe(userId);
-    expect(result.session.expiresAt).toBe(expiresAt);
+    await narvik.createSession(authenticatedUser.id);
+    await narvik.createSession(authenticatedUser.id);
+    await narvik.createSession(authenticatedUser.id);
+
+    expect(adapter.numberOfSessions()).toBe(3);
+    const userSessions = await narvik.fetchSessionsForUser(authenticatedUser.id);
+    expect(userSessions.length).toBe(3);
+
+    await narvik.deleteSessionsForUser(authenticatedUser.id);
+    expect(adapter.numberOfSessions()).toBe(0);
 })
 
+test('Validate delete all expired sessions', async () => {
 
-test('Validate Session - not renewed as over half of length left', async () => {
-
-    const testSessionToken = 'testSessionToken';
-    const testSessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(testSessionToken)));
-    const testUserId = 'testUserId';
-    const testExpiresAt = new Date(Date.now() + 1728000000); // 20 days in the future
-
-    function fetchSession(sessionId: string): Promise<Session | null> {
-        expect(sessionId).toBe(testSessionId);
-        return Promise.resolve({
-            id: testSessionId,
-            userId: testUserId,
-            expiresAt: testExpiresAt
-        })
+    const authenticatedUser = {
+        id: 'userId',
     }
 
-    const narvik = new Narvik({
-        data: {
-            saveSession: defaultSaveSession,
-            fetchSession: fetchSession,
-            updateSessionExpiry: defaultUpdateSessionExpiry,
-            deleteSession: defaultDeleteSession
-        }
-    });
+    expect(narvik).toBeDefined();
+    expect(adapter.numberOfSessions()).toBe(0);
 
-    const result = await narvik.validateSession(testSessionToken);
-    expect(result).toBeDefined();
+    let sessionToExpire = await narvik.createSession(authenticatedUser.id);
+    await narvik.createSession(authenticatedUser.id);
+    await narvik.createSession(authenticatedUser.id);
 
-    expect(result.id).toBe(testSessionId);
-    expect(result.userId).toBe(testUserId);
-    expect(result.expiresAt).toBe(testExpiresAt);
-    expect(result.extended).toBeUndefined();
-    expect(result.new).toBeUndefined();
-})
+    expect(adapter.numberOfSessions()).toBe(3);
 
-test('Validate Session - not renewed as less half of session length left', async () => {
-    const defaultSessionExpiry = 2592000000; // 30 days
+    sessionToExpire.session.expiresAt = new Date(Date.now() - 1000);
+    await adapter.saveSession(sessionToExpire.session);
 
-    const testSessionToken = 'testSessionToken';
-    const testSessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(testSessionToken)));
-    const testUserId = 'testUserId';
-    const testExpiresAt = new Date(Date.now() + 864000000); // 10 days in the future
-
-    let extendedExpiresAt = undefined
-    function fetchSession(sessionId: string): Promise<Session | null> {
-        expect(sessionId).toBe(testSessionId);
-        return Promise.resolve({
-            id: testSessionId,
-            userId: testUserId,
-            expiresAt: testExpiresAt
-        })
-    }
-
-    function updateSessionExpiry(sessionId: String, updatedExpiresAt: Date): Promise<void> {
-        expect(sessionId).toBe(testSessionId);
-        expect(updatedExpiresAt.getTime() - Date.now()).toBeGreaterThan(defaultSessionExpiry - 10000);
-        expect(updatedExpiresAt.getTime() - Date.now()).toBeLessThanOrEqual(defaultSessionExpiry);
-        extendedExpiresAt = updatedExpiresAt;
-        return Promise.resolve();
-    }
-
-    const narvik = new Narvik({
-        data: {
-            saveSession: defaultSaveSession,
-            fetchSession: fetchSession,
-            updateSessionExpiry: updateSessionExpiry,
-            deleteSession: defaultDeleteSession
-        }
-    });
-
-    const result = await narvik.validateSession(testSessionToken);
-    expect(result).toBeDefined();
-
-    expect(result.id).toBe(testSessionId);
-    expect(result.userId).toBe(testUserId);
-    expect(result.expiresAt).toBe(extendedExpiresAt);
-    expect(result.extended).toBe(true);
-    expect(result.new).toBeUndefined();
-})
-
-test('Validate Session - null as session expired', async () => {
-    const testSessionToken = 'testSessionToken';
-    const testSessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(testSessionToken)));
-    const testUserId = 'testUserId';
-    const testExpiresAt = new Date(Date.now() - 1000); // 1 second in the past
-
-    function fetchSession(sessionId: string): Promise<Session | null> {
-        expect(sessionId).toBe(testSessionId);
-        return Promise.resolve({
-            id: testSessionId,
-            userId: testUserId,
-            expiresAt: testExpiresAt
-        })
-    }
-
-    function deleteSession(sessionId: string): Promise<void> {
-        expect(sessionId).toBe(testSessionId);
-        return Promise.resolve();
-    }
-
-    const narvik = new Narvik({
-        data: {
-            saveSession: defaultSaveSession,
-            fetchSession: fetchSession,
-            updateSessionExpiry: defaultUpdateSessionExpiry,
-            deleteSession: deleteSession
-        }
-    });
-
-    const result = await narvik.validateSession(testSessionToken);
-    expect(result).toBeNull();
-})
-
-test('Validate Session - null as no session found', async () => {
-    const testSessionToken = 'testSessionToken';
-    const testSessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(testSessionToken)));
-
-    function fetchSession(sessionId: string): Promise<Session | null> {
-        expect(sessionId).toBe(testSessionId);
-        return Promise.resolve(null);
-    }
-
-    const narvik = new Narvik({
-        data: {
-            saveSession: defaultSaveSession,
-            fetchSession: fetchSession,
-            updateSessionExpiry: defaultUpdateSessionExpiry,
-            deleteSession: defaultDeleteSession
-        }
-    });
-
-    const result = await narvik.validateSession(testSessionToken);
-    expect(result).toBeNull();
-})
-
-
-test('Invalidate Session', async () => {
-    const testSessionId = "session-id"
-
-    function deleteSession(sessionId:string): Promise<void> {
-        expect(sessionId).toBe(testSessionId);
-        return Promise.resolve();
-    }
-
-    const narvik = new Narvik({
-        data: {
-            saveSession: defaultSaveSession,
-            fetchSession: defaultFetchSession,
-            updateSessionExpiry: defaultUpdateSessionExpiry,
-            deleteSession: deleteSession
-        }
-    });
-
-    await narvik.invalidateSession(testSessionId);
+    await narvik.deleteAllExpiredSessions();
+    expect(adapter.numberOfSessions()).toBe(2);
 })

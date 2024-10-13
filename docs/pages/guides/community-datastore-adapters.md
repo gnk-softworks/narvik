@@ -25,8 +25,6 @@ If you are going to create an adapter please consider the following:
 - The adapter should be well tested - Narvik has a commitment to 100% test coverage in the core library and we would expect any adapters to have sufficient test coverage to ensure they are reliable.
 - The adapter should be well maintained - Narvik is a fast moving project and we expect any adapters to be kept up to date with the latest version of Narvik. If we find an adapter is not being maintained we may remove it from this page.
 
-[//]: # (//instructions to build the below adapter)
-
 ### Create your adapter
 
 To create a datastore adapter for Narvik, you need to implement the `NarvikDataConfiguration` interface. This interface has the following methods:

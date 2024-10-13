@@ -13,13 +13,11 @@ test('Create session with default session expiry configuration', async () => {
     const userId = 'userId';
     let sessionExpiry = 2592000000; // 30 days - default
 
-    let sessionId = '';
     let expiresAt = undefined
 
     const saveSessionFunction = async (session: Session): Promise<void> => {
         expect(session).toBeDefined();
         expect(session.id).toBeDefined();
-        sessionId = session.id;
         expect(session.userId).toBe(userId);
         expect(session.expiresAt).toBeDefined();
         expect(session.expiresAt.getTime() - Date.now()).toBeGreaterThan(sessionExpiry - 10000);
@@ -255,4 +253,101 @@ test('Invalidate Session', async () => {
     });
 
     await narvik.invalidateSession(testSessionId);
+})
+
+test('unset optional callbacks throw errors', async () => {
+    const userId = "user-id"
+
+    const narvik = new Narvik({
+        data: {
+            saveSession: defaultSaveSession,
+            fetchSession: defaultFetchSession,
+            updateSessionExpiry: defaultUpdateSessionExpiry,
+            deleteSession: defaultDeleteSession
+        }
+    });
+
+    await expect((async () => {
+        await narvik.fetchSessionsForUser(userId);
+    })()).rejects.toThrowError('fetchSessionsForUser callback provided in configuration');
+
+    await expect((async () => {
+        await narvik.deleteSessionsForUser(userId);
+    })()).rejects.toThrowError('deleteSessionsForUser callback provided in configuration');
+
+    await expect((async () => {
+        await narvik.deleteAllExpiredSessions();
+    })()).rejects.toThrowError('deleteAllExpiredSessions callback provided in configuration');
+})
+
+test('Fetch Sessions for User', async () => {
+    const userId = "user-id"
+    const session1 = {
+        id: "session-id-1",
+        userId: userId
+    }
+    const session2 = {
+        id: "session-id-2",
+        userId: userId
+    }
+
+    function fetchSessionsForUser(userId: string): Promise<Session[]> {
+        expect(userId).toBe(userId);
+        return Promise.resolve([session1, session2]);
+    }
+
+    const narvik = new Narvik({
+        data: {
+            saveSession: defaultSaveSession,
+            fetchSession: defaultFetchSession,
+            updateSessionExpiry: defaultUpdateSessionExpiry,
+            deleteSession: defaultDeleteSession,
+            fetchSessionsForUser: fetchSessionsForUser
+        }
+    });
+
+    const result = await narvik.fetchSessionsForUser(userId);
+    expect(result).toBeDefined();
+    expect(result.length).toBe(2);
+    expect(result[0]).toBe(session1);
+    expect(result[1]).toBe(session2);
+})
+
+test('Delete Sessions for User', async () => {
+    const userId = "user-id"
+
+    function deleteSessionsForUser(userId: string): Promise<void> {
+        expect(userId).toBe(userId);
+        return Promise.resolve();
+    }
+
+    const narvik = new Narvik({
+        data: {
+            saveSession: defaultSaveSession,
+            fetchSession: defaultFetchSession,
+            updateSessionExpiry: defaultUpdateSessionExpiry,
+            deleteSession: defaultDeleteSession,
+            deleteSessionsForUser: deleteSessionsForUser
+        }
+    });
+
+    await narvik.deleteSessionsForUser(userId);
+})
+
+test('Delete All Expired Sessions', async () => {
+    function deleteAllExpiredSessions(): Promise<void> {
+        return Promise.resolve();
+    }
+
+    const narvik = new Narvik({
+        data: {
+            saveSession: defaultSaveSession,
+            fetchSession: defaultFetchSession,
+            updateSessionExpiry: defaultUpdateSessionExpiry,
+            deleteSession: defaultDeleteSession,
+            deleteAllExpiredSessions: deleteAllExpiredSessions
+        }
+    });
+
+    await narvik.deleteAllExpiredSessions();
 })
