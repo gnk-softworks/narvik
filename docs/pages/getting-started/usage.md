@@ -44,3 +44,29 @@ const blankCookie = narvik.createBlankSessionCookie();
 
 //TODO: Set the cookie to clear the session
 ```
+
+## Using functions enabled by optional callbacks
+As outlined on the setup page, you can enable additional session management functions by providing optional callbacks in your configuration. These callbacks are directly accessible on the Narvik instance and can be used throughout your application.
+
+### Fetching all sessions for a user
+This function should be used to fetch all sessions for a user (by user id) from your datastore. An example use case is displaying a list of all active sessions to the user.
+
+```ts
+const sessions = await narvik.fetchSessionsForUser(userId);
+```
+
+### Deleting all sessions for a user
+This function should be used to delete all sessions for a user (by user id) from your datastore. An example use case is when a user changes their password and needs to end previous sessions to ensure security.
+
+```ts
+await narvik.deleteSessionsForUser(userId);
+```
+
+### Deleting all expired sessions
+This function should be used to delete all expired sessions from your datastore. You may want to run this to remove old sessions and keep your database clean.
+
+> Note: It is important to note that some databases offer built-in TTL functionality that can handle this automatically, which may be preferable to calling this function.
+
+```ts
+await narvik.deleteAllExpiredSessions();
+```

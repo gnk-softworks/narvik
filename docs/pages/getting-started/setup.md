@@ -14,7 +14,9 @@ npm i narvik
 
 ## Configuration
 
-The basic configuration requires only that you provide functions for managing session data in you data store. For more information on these callbacks, see the [Session Storage](/documentation/session-storage) page.
+### Data Management Callbacks
+
+The basic configuration requires only that you provide functions for managing basic session operations in your data store.
 
 ```ts
 export const narvik = new Narvik({
@@ -34,6 +36,27 @@ export const narvik = new Narvik({
     },
 });
 ```
+You can also provide three additional "optional" callbacks that enable you to perform additional session management functions:
+
+```ts
+export const narvik = new Narvik({
+    data: {
+        //as above
+        fetchSessionsForUser: async (userId: string): Promise<Session[]> => {
+            // Enables the 'fetchSessionsForUser' on Narvik - Used to Fetch all sessions for a user from your database
+        },
+        deleteSessionsForUser: async (userId: string): Promise<void> => {
+            // Enables the 'deleteSessionsForUser' on Narvik - Used to Delete all sessions for a user from your database
+        },
+        deleteAllExpiredSessions: (): Promise<void> => {
+            // Enables the 'deleteAllExpiredSessions' on Narvik - Used to Delete all expired sessions from your database. Some databases offer built-in TTL functionality that can handle this automatically which may be preferable.
+        }
+    }
+});
+```
+For more information on these callbacks, see the [Session Storage](/documentation/session-storage) page.
+
+### Session & Cookie Configuration
 
 You can also provide additional configuration options for sessions and cookies.
 ```ts
