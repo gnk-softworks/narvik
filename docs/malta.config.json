@@ -23,6 +23,7 @@
       "title": "Guides",
       "pages": [
           ["Additional/Custom Session Data", "/guides/additional-session-data"],
+          ["Community Datastore Adapters", "/guides/community-datastore-adapters"],
           ["Migrate from Lucia (Coming Soon)", "/guides/lucia"],
           ["NextJS (Coming Soon)", "/guides/NextJS"]
       ]

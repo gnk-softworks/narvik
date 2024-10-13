@@ -30,8 +30,26 @@ export const narvik = new Narvik({
 });
 ```
 
-## Other functions you may want to implement
-As outlined on the Sessions page, it’s important to implement the following additional session management functions for use throughout your application:
-- Get all sessions for a user – Useful for displaying a list of all active sessions to the user. 
-- Delete sessions for a user – Helpful when a user changes their password and needs to end previous sessions. 
-- Delete all expired sessions – Useful for database maintenance, though some databases offer built-in TTL functionality that can handle this automatically.
+You can also provide three additional "optional" callbacks that enable you to perform additional session management functions. These are:
+- `fetchSessionsForUser`: Fetch all sessions for a user (by user ID) from your data store.
+- `deleteSessionsForUser`: Delete all sessions for a user (by user ID) from your data store.
+- `deleteAllExpiredSessions`: Delete all expired sessions from your data store.
+
+Although optional, these features are valuable for managing sessions within your database. They help maintain session security across your application by removing outdated sessions and keeping your database organized and clean.
+
+```ts
+export const narvik = new Narvik({
+    data: {
+        //as above
+        fetchSessionsForUser: async (userId: string): Promise<Session[]> => {
+            // Enables the 'fetchSessionsForUser' on Narvik - Used to Fetch all sessions for a user from your database
+        },
+        deleteSessionsForUser: async (userId: string): Promise<void> => {
+            // Enables the 'deleteSessionsForUser' on Narvik - Used to Delete all sessions for a user from your database
+        },
+        deleteAllExpiredSessions: (): Promise<void> => {
+            // Enables the 'deleteAllExpiredSessions' on Narvik - Used to Delete all expired sessions from your database. Some databases offer built-in TTL functionality that can handle this automatically which may be preferable.
+        }
+    }
+});
+```
