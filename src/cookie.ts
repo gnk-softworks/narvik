@@ -1,9 +1,9 @@
 import {Cookie, CookieAttributes} from "./index.js";
 
-function create(name:string, value: string, coreAttributes: CookieAttributes, sessionExpiresInMs: number): Cookie {
+function create(name:string, value: string, coreAttributes: CookieAttributes, cookieExpiresInMs: number): Cookie {
     return new Cookie(name, value, {
         ...coreAttributes,
-        maxAge: sessionExpiresInMs / 1000
+        maxAge: cookieExpiresInMs / 1000
     });
 }
 

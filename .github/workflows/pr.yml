@@ -33,5 +33,5 @@ jobs:
         if: ${{ ! github.event.pull_request.head.repo.fork }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           path: ./coverage/report.txt

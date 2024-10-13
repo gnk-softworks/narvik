@@ -46,6 +46,7 @@ export const narvik = new Narvik({
     },
     cookie: { //Optional - Cookie configuration
         name: "your-app-session", //Optional - Session cookie name. Default is "narvik_session"
+        cookieExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired cookie length in ms. Default is same as "sessionExpiresInMs" - here value is 1 week
         attributes: {
             secure: true, //Optional - Default true - set to true for https, set to false for http
             domain: "example.com", //Optional - Domain attribute. Default is not set

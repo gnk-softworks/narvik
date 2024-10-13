@@ -53,6 +53,7 @@ test('Create cookie from session with custom configuration', async () => {
         },
         cookie: {
             name: 'example-cookie',
+            cookieExpiresInMs:  1000 * 60 * 60 * 24 * 3, // 3 days
             attributes: {
                 secure: false,
                 domain: 'example.com',
@@ -73,11 +74,11 @@ test('Create cookie from session with custom configuration', async () => {
     expect(result.attributes.domain).toBe(config.cookie.attributes.domain)
     expect(result.attributes.path).toBe(config.cookie.attributes.path)
     expect(result.attributes.sameSite).toBe(config.cookie.attributes.sameSite)
-    expect(result.attributes.maxAge).greaterThan((config.session.sessionExpiresInMs / 1000) - 10000);
-    expect(result.attributes.maxAge).lessThanOrEqual(config.session.sessionExpiresInMs / 1000);
+    expect(result.attributes.maxAge).greaterThan((config.cookie.cookieExpiresInMs / 1000) - 10000);
+    expect(result.attributes.maxAge).lessThanOrEqual(config.cookie.cookieExpiresInMs / 1000);
 
     const serializedValue = result.serialize()
-    expect(serializedValue).toBe(`example-cookie=session-token; Domain=example.com; Max-Age=604800; Path=/example; SameSite=Lax; HttpOnly`)
+    expect(serializedValue).toBe(`example-cookie=session-token; Domain=example.com; Max-Age=259200; Path=/example; SameSite=Lax; HttpOnly`)
 })
 
 test('Serialize cookies after modifying cookie values to cover edge cases', async () => {

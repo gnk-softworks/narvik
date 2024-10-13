@@ -20,6 +20,7 @@ export interface NarvikSessionConfiguration {
 }
 export interface NarvikCookieConfiguration {
     name?: string;
+    cookieExpiresInMs?: number;
     attributes?: NarvikCookieAttributesConfiguration;
 }
 
@@ -70,18 +71,19 @@ export interface CreateSessionResult {
     session: Session;
 }
 
-
 export class Narvik {
 
     private data: NarvikDataConfiguration;
 
     private readonly sessionExpiresInMs: number;
+    private readonly cookieExpiresInMs: number;
     public readonly cookieName: string;
     private readonly coreCookieAttributes: CookieAttributes;
 
     constructor(config: NarvikConfiguration) {
         this.data = config.data;
         this.sessionExpiresInMs = config?.session?.sessionExpiresInMs ?? 2592000000;
+        this.cookieExpiresInMs = config?.cookie?.cookieExpiresInMs ?? this.sessionExpiresInMs;
         this.cookieName = config?.cookie?.name ?? "narvik_session";
         this.coreCookieAttributes = {
             httpOnly: true,
@@ -107,7 +109,7 @@ export class Narvik {
     }
 
     public createCookie(sessionToken: string): Cookie {
-        return cookies.create(this.cookieName, sessionToken, this.coreCookieAttributes, this.sessionExpiresInMs);
+        return cookies.create(this.cookieName, sessionToken, this.coreCookieAttributes, this.cookieExpiresInMs);
     }
 
     public createBlankCookie(): Cookie {
