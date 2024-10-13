@@ -1,6 +1,4 @@
 import { expect, test } from 'vitest'
-import {encodeHexLowerCase} from "@oslojs/encoding";
-import {sha256} from "@oslojs/crypto/sha2";
 import {Narvik, NarvikConfiguration} from "../src";
 import {
     defaultDeleteSession,

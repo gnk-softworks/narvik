@@ -18,7 +18,7 @@ interface Session {
 
 ## Extending the Session Object
 
-To use custom session data, you must extend the `AdditionalSessionData` interface using Declaration Merging. This allows you to add additional properties to the AdditionalSessionData interface which is extended by the session interface. For example, if you wanted to store the timestamp of when the session was created, you could extend the interface like this:
+To use add additional data to the session, you must extend the `AdditionalSessionData` interface using Declaration Merging. This allows you to add additional properties to the AdditionalSessionData interface which is extended by the session interface. For example, if you wanted to store the timestamp of when the session was created, you could extend the interface like this:
 
 ```ts
 declare module 'narvik' {
