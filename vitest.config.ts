@@ -10,11 +10,12 @@ export default defineConfig({
                 ['text', { file: 'report.txt' }], // Output coverage to coverage.txt
             ],
             reportsDirectory: 'coverage',
-            // Minimum coverage thresholds
-            lines: 80,
-            functions: 80,
-            branches: 70,
-            statements: 80,
+            thresholds: {
+                lines: 100,
+                functions: 100,
+                branches: 100,
+                statements: 100,
+            }
         },
     },
 });
