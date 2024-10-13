@@ -30,7 +30,9 @@ export interface NarvikCookieAttributesConfiguration {
     sameSite?: "lax" | "strict" | "none";
 }
 
-export interface Session {
+export interface AdditionalSessionData {}
+
+export interface Session extends AdditionalSessionData {
     id: string;
     userId: string;
     expiresAt: Date;
@@ -90,9 +92,9 @@ export class Narvik {
         };
     }
 
-    public async createSession(userId: string): Promise<CreateSessionResult> {
+    public async createSession(userId: string, additionalData?: AdditionalSessionData): Promise<CreateSessionResult> {
         const sessionToken = generateRandomToken();
-        const session = await sessions.create(sessionToken, userId, this.sessionExpiresInMs, this.data.saveSession);
+        const session = await sessions.create(sessionToken, userId, this.sessionExpiresInMs, this.data.saveSession, additionalData);
         return { token: sessionToken, session };
     }
 

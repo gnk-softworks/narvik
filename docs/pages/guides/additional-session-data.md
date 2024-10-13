@@ -1,8 +1,8 @@
 ---
-title: "Guide: Custom Session Data"
+title: "Guide: Additional Session Data"
 ---
 
-# Custom Session Data
+# Additional Session Data
 
 Narvik uses the session object to track and validate requests made by authenticated users. The session object is created and stored on login, validated on every request, and then deleted on log out. The session object has the following interface:
 
@@ -18,11 +18,11 @@ interface Session {
 
 ## Extending the Session Object
 
-To use custom session data, you must extend the `Session` interface using Declaration Merging. This allows you to add additional properties to the session object. For example, if you wanted to store the timestamp of when the session was created, you could extend the `Session` interface like this:
+To use custom session data, you must extend the `AdditionalSessionData` interface using Declaration Merging. This allows you to add additional properties to the AdditionalSessionData interface which is extended by the session interface. For example, if you wanted to store the timestamp of when the session was created, you could extend the interface like this:
 
 ```ts
 declare module 'narvik' {
-    interface Session {
+    interface AdditionalSessionData {
         createdAt?: Date;
     }
 }
@@ -47,7 +47,7 @@ const createSessionReult = await narvik.createSession(authenticatedUser.id, {
 ```
 
 ## Populating Custom Session Data in the data callbacks
-Because you have control over the data callbacks, you can populate the custom session data directly within them. For example, if you wanted to store the timestamp of when the session was created, you could populate the `createdAt` property in the `saveSession` callback like this:
+Because you have control over the data management callbacks, you can populate the additional session data directly within them. For example, if you wanted to store the timestamp of when the session was created, you could populate the `createdAt` property in the `saveSession` callback like this:
 
 ```ts
         async function saveSession (session: Session): Promise<void> {

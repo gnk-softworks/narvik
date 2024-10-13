@@ -1,19 +1,25 @@
 import {encodeHexLowerCase} from "@oslojs/encoding";
 import {sha256} from "@oslojs/crypto/sha2";
-import {Session} from "./index.js";
+import {AdditionalSessionData, Session} from "./index.js";
 
 async function create(
     token: string,
     userId: string,
     sessionExpiresInMs: number,
-    saveSession: (session: Session) => Promise<void>
+    saveSession: (session: Session) => Promise<void>,
+    additionalData?: AdditionalSessionData
 ): Promise<Session> {
     const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-    const session: Session = {
+    let session: Session = {
         id: sessionId,
         userId,
         expiresAt: new Date(Date.now() + sessionExpiresInMs)
     };
+
+    if (additionalData) {
+        session = {...session, ...additionalData};
+    }
+
     await saveSession(session);
     session.new = true;
     return session;

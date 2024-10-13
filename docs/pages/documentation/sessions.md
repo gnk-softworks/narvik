@@ -15,6 +15,8 @@ interface Session {
 }
 ```
 
+> Note: For information on how to extend the session object with additional data, see the [Additional Session Data](/guides/additional-session-data) guide.
+
 ## Creating Sessions
 To create a session, call the `createSession()` function with the authenticated user’s ID. This will generate a session object and a token, the session is then saved to your database via the saveSession callback provided in your configuration. The `createSession()` function returns a CreateSessionResult object containing both the session object and the token. The token can be stored as a cookie ([see the cookies section](/documentation/cookies)) or be passed in as a token on subsequent requests to identify the user .
 ```ts

@@ -1,17 +1,17 @@
 import { expect, test } from 'vitest'
 import {Narvik, Session} from "../src";
 import {
-    defaultDeleteSession,
+    defaultDeleteSession, defaultFetchSession,
     defaultUpdateSessionExpiry
 } from "./data/config/defaultSessionFunctions.js";
 
 declare module '../src' {
-    interface Session {
+    interface AdditionalSessionData {
         customField?: string;
     }
 }
 
-test('Create and validate custom session with default session expiry', async () => {
+test('Create and validate custom session with data added in callbacks', async () => {
     const userId = 'userId';
     let sessionExpiry = 2592000000; // 30 days - default
     let customSession: Session | undefined = undefined;
@@ -62,4 +62,42 @@ test('Create and validate custom session with default session expiry', async () 
     expect(validateSessionResult).toBeDefined();
     expect(validateSessionResult).toBe(customSession);
     expect(validateSessionResult.customField).toBe('customValue');
+})
+
+test('Create custom session with data added in createSession call', async () => {
+    const userId = 'userId';
+    let sessionExpiry = 2592000000; // 30 days - default
+    let customSession: Session | undefined = undefined;
+
+    const saveSessionFunction = async (session: Session): Promise<void> => {
+        expect(session).toBeDefined();
+        expect(session.id).toBeDefined();
+        expect(session.userId).toBe(userId);
+        expect(session.expiresAt).toBeDefined();
+        expect(session.expiresAt.getTime() - Date.now()).toBeGreaterThan(sessionExpiry - 10000);
+        expect(session.expiresAt.getTime() - Date.now()).toBeLessThanOrEqual(sessionExpiry);
+        expect(session.customField).toBe('customValue');
+
+        /*
+        These are undefined because they are not saved in the session.
+        They are only used to indicate the state of the session as it is created or updated.
+         */
+        expect(session.new).toBeUndefined();
+        expect(session.extended).toBeUndefined();
+
+        customSession = session;
+    }
+
+    const narvik = new Narvik({
+        data: {
+            saveSession: saveSessionFunction,
+            fetchSession: defaultFetchSession,
+            updateSessionExpiry: defaultUpdateSessionExpiry,
+            deleteSession: defaultDeleteSession
+        }
+    });
+
+    const createSessionResult = await narvik.createSession(userId, {customField: 'customValue'});
+    expect(createSessionResult.session).toBe(customSession);
+    expect(createSessionResult.session.customField).toBe('customValue');
 })
