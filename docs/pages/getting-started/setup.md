@@ -57,6 +57,4 @@ export const narvik = new Narvik({
 });
 ```
 
-
-
 #### [Next Section: Usage](/getting-started/usage)

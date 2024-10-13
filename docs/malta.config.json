@@ -22,8 +22,9 @@
     {
       "title": "Guides",
       "pages": [
-        ["Migrate from Lucia (Coming Soon)", "/guides/lucia"],
-        ["NextJS (Coming Soon)", "/guides/NextJS"]
+          ["Additional/Custom Session Data", "/guides/additional-session-data"],
+          ["Migrate from Lucia (Coming Soon)", "/guides/lucia"],
+          ["NextJS (Coming Soon)", "/guides/NextJS"]
       ]
     },
     {
@@ -37,7 +38,8 @@
       "pages": [
         ["GitHub Repo", "https://github.com/gnk-softworks/narvik"],
         ["NPM Package", "https://www.npmjs.com/package/narvik"],
-        ["Discord", "https://discord.gg/y2WGpuwztV"]
+        ["Discord", "https://discord.gg/y2WGpuwztV"],
+        ["X", "https://x.com/NarvikAuth"]
       ]
     }
   ],
