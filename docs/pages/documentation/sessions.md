@@ -15,8 +15,9 @@ interface Session {
 }
 ```
 
-## Creating Sessions
+> Note: For information on how to extend the session object with additional data, see the [Additional Session Data](/guides/additional-session-data) guide.
 
+## Creating Sessions
 To create a session, call the `createSession()` function with the authenticated user’s ID. This will generate a session object and a token, the session is then saved to your database via the saveSession callback provided in your configuration. The `createSession()` function returns a CreateSessionResult object containing both the session object and the token. The token can be stored as a cookie ([see the cookies section](/documentation/cookies)) or be passed in as a token on subsequent requests to identify the user .
 ```ts
 export interface CreateSessionResult {
@@ -41,8 +42,8 @@ The session’s expiresAt field is automatically extended with each use, ensurin
 ```ts
 export const narvik = new Narvik({
     data: {}, //data configuration
-    session: { //Optional - Session configuration 
-        sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session lenth in ms. Default is 30 Days - here value is 1 week
+    session: { //Optional - Session configuration
+        sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session length in ms. Default is 30 Days - here value is 1 week
     },
     cookie: {} //Optional cookie configuration
 });

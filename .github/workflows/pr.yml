@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Build
         run: npm run build
@@ -25,8 +25,13 @@ jobs:
       - name: Run Coverage Script
         run: npm run coverage
 
+      - name: Markdownize Istanbul report
+        run: |
+          sed -i -e '1{/^----/d}; ${/^----/d}' ./coverage/report.txt
+
       - name: Comment Coverage on PR
+        if: ${{ ! github.event.pull_request.head.repo.fork }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           path: ./coverage/report.txt

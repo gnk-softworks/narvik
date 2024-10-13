@@ -3,7 +3,7 @@ name: Publish docs
 on:
   push:
     branches:
-      - 'main'
+      - main
 
 permissions:
   contents: read
@@ -14,12 +14,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: setup actions
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: install malta
         run: |
           curl -o malta.tgz -L https://github.com/pilcrowonpaper/malta/releases/latest/download/linux-amd64.tgz
           tar -xvzf malta.tgz
+          rm malta.tgz
       - name: build
         working-directory: ./docs
         run: ../linux-amd64/malta build

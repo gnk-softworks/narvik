@@ -9,12 +9,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
 
+    if: "${{ !contains(github.event.head_commit.message, 'ci: publish version') }}"
+
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org/'
@@ -22,7 +24,8 @@ jobs:
       - name: Set Git user
         run: |
           git config user.name "narvik-publish-action"
-          git config user.email "narvik-publish-action@narvik-auth.com"
+          # https://api.github.com/users/github-actions%5Bbot%5D
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version
         run: npm version patch --no-git-tag-version
@@ -30,7 +33,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build package
         run: npm run build
@@ -47,5 +50,3 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    if: "!contains(github.event.head_commit.message, 'ci: publish version')"

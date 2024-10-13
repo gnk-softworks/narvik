@@ -41,11 +41,12 @@ export const narvik = new Narvik({
     data: {
         //as above
     },
-    session: { //Optional - Session configuration 
-        sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session lenth in ms. Default is 30 Days - here value is 1 week
+    session: { //Optional - Session configuration
+        sessionExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired session length in ms. Default is 30 Days - here value is 1 week
     },
     cookie: { //Optional - Cookie configuration
         name: "your-app-session", //Optional - Session cookie name. Default is "narvik_session"
+        cookieExpiresInMs: 1000 * 60 * 60 * 24 * 7, //Optional - Desired cookie length in ms. Default is same as "sessionExpiresInMs" - here value is 1 week
         attributes: {
             secure: true, //Optional - Default true - set to true for https, set to false for http
             domain: "example.com", //Optional - Domain attribute. Default is not set
@@ -55,7 +56,5 @@ export const narvik = new Narvik({
     }
 });
 ```
-
-
 
 #### [Next Section: Usage](/getting-started/usage)

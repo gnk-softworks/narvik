@@ -20,6 +20,7 @@ export interface NarvikSessionConfiguration {
 }
 export interface NarvikCookieConfiguration {
     name?: string;
+    cookieExpiresInMs?: number;
     attributes?: NarvikCookieAttributesConfiguration;
 }
 
@@ -30,7 +31,9 @@ export interface NarvikCookieAttributesConfiguration {
     sameSite?: "lax" | "strict" | "none";
 }
 
-export interface Session {
+export interface AdditionalSessionData {}
+
+export interface Session extends AdditionalSessionData {
     id: string;
     userId: string;
     expiresAt: Date;
@@ -38,10 +41,20 @@ export interface Session {
     extended?: boolean;
 }
 
-export interface Cookie {
-    name: string;
-    value: string;
-    attributes: CookieAttributes;
+export class Cookie {
+    public name: string;
+    public value: string;
+    public attributes: CookieAttributes;
+
+    constructor(name: string, value: string, attributes: CookieAttributes) {
+        this.name = name;
+        this.value = value;
+        this.attributes = attributes;
+    }
+
+    public serialize(): string {
+        return cookies.serialize(this.name, this.value, this.attributes);
+    }
 }
 
 export interface CookieAttributes {
@@ -58,18 +71,19 @@ export interface CreateSessionResult {
     session: Session;
 }
 
-
 export class Narvik {
 
     private data: NarvikDataConfiguration;
 
     private readonly sessionExpiresInMs: number;
+    private readonly cookieExpiresInMs: number;
     public readonly cookieName: string;
     private readonly coreCookieAttributes: CookieAttributes;
 
     constructor(config: NarvikConfiguration) {
         this.data = config.data;
         this.sessionExpiresInMs = config?.session?.sessionExpiresInMs ?? 2592000000;
+        this.cookieExpiresInMs = config?.cookie?.cookieExpiresInMs ?? this.sessionExpiresInMs;
         this.cookieName = config?.cookie?.name ?? "narvik_session";
         this.coreCookieAttributes = {
             httpOnly: true,
@@ -80,9 +94,9 @@ export class Narvik {
         };
     }
 
-    public async createSession(userId: string): Promise<CreateSessionResult> {
+    public async createSession(userId: string, additionalData?: AdditionalSessionData): Promise<CreateSessionResult> {
         const sessionToken = generateRandomToken();
-        const session = await sessions.create(sessionToken, userId, this.sessionExpiresInMs, this.data.saveSession);
+        const session = await sessions.create(sessionToken, userId, this.sessionExpiresInMs, this.data.saveSession, additionalData);
         return { token: sessionToken, session };
     }
 
@@ -95,7 +109,7 @@ export class Narvik {
     }
 
     public createCookie(sessionToken: string): Cookie {
-        return cookies.create(this.cookieName, sessionToken, this.coreCookieAttributes, this.sessionExpiresInMs);
+        return cookies.create(this.cookieName, sessionToken, this.coreCookieAttributes, this.cookieExpiresInMs);
     }
 
     public createBlankCookie(): Cookie {

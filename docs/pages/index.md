@@ -9,6 +9,7 @@ title: "Narvik Authentication Library Documentation"
 
 ## Introduction
 Narvik is a server side authentication library that abstracts away the complexity of managing sessions using an API that's easy to use, understand, and extend. It works independent of your chosen database setup, is built with TypeScript and released under the CC0 license.
+
 ### Features
 - [x] Simple, easy to understand configuration
 - [x] Data store agnostic
@@ -20,8 +21,6 @@ Narvik is a server side authentication library that abstracts away the complexit
 
 ## Mentions
 Although this library has been implemented from scratch, Narvik draws inspiration from the Lucia authentication library and makes use of oslojs. Both of these projects (and the framework this documentation site uses) were created by [@PilcrowOnPaper](https://github.com/pilcrowOnPaper). He has done a great job in creating these and many more resources that are the place to start for anyone looking to build a secure and reliable authentication system.
-
-
 
 ## Contributions
 If you want to contribute to this project, please see the [how to contribute](/contribute) page.
