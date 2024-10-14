@@ -1,0 +1,5 @@
+{
+  "name": "@narvik/narvik",
+  "version": "0.2.8",
+  "exports": "./dist/index.js"
+}
