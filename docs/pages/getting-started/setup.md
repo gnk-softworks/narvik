@@ -11,6 +11,10 @@ To install Narvik from NPM, run:
 ```bash
 npm i narvik
 ```
+or for the jsr.io package
+```bash
+npx jsr add @narvik/narvik
+```
 
 ## Configuration
 
