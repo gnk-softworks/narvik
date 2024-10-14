@@ -38,9 +38,8 @@ jobs:
 
       - name: Update jsr.json
         run: |
-            version=$(jq --raw-output '."version"' <package.json)
-            jq --arg version "$version" '.version = $version' <jsr.json >jsr.json.tmp
-            mv jsr.json.tmp jsr.json
+            NPM_VERSION=$(jq --raw-output '."version"' <package.json)
+            jq --arg version "$NPM_VERSION" '."version" = $version' <jsr.json | sponge jsr.json
 
       - name: Install dependencies
         run: npm ci
