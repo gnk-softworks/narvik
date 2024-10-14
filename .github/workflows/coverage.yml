@@ -1,0 +1,30 @@
+name: Report Coverage to Coveralls
+
+on:
+  push:
+    branches:
+      - next
+      - main
+      - feature/better-coverage-reporting
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Coverage Script
+        run: npm run coverage
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
