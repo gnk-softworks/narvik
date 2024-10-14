@@ -48,6 +48,22 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Commit version bump
+        run: |
+            git add package.json package-lock.json
+            git commit -m "ci: publish version $(npm pkg get version | tr -d '\n')"
+            git push
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create and push tag
+        run: |
+            version=$(jq --raw-output '."version"' <package.json)
+            git tag "v$version"
+            git push origin "v$version"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish to NPM
         run: npm publish
         env:
@@ -56,18 +72,4 @@ jobs:
       - name: Publish to JSR
         run: npx jsr publish
 
-      - name: Commit version bump
-        run: |
-          git add package.json package-lock.json
-          git commit -m "ci: publish version $(npm pkg get version | tr -d '\n')"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create and push tag
-        run: |
-          version=$(jq --raw-output '."version"' <package.json)
-          git tag "v$version"
-          git push origin "v$version"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
