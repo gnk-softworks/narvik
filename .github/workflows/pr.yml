@@ -25,6 +25,9 @@ jobs:
       - name: Run Coverage Script
         run: npm run coverage
 
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+
       - name: Markdownize Istanbul report
         run: |
           sed -i -e '1{/^----/d}; ${/^----/d}' ./coverage/report.txt
