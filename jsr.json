@@ -1,5 +1,14 @@
 {
-  "name": "@narvik/narvik",
-  "version": "0.2.8",
-  "exports": "./src/index.ts"
+    "name": "@narvik/narvik",
+    "version": "0.2.8",
+    "exports": "./src/index.ts",
+    "publish": {
+        "exclude": [
+            ".github/**/*",
+            "assets/**/*",
+            "docs/**/*",
+            "test/**/*",
+            "vitest.config.ts",
+        ]
+    }
 }
