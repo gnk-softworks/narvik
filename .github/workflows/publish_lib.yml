@@ -50,7 +50,7 @@ jobs:
 
       - name: Commit version bump
         run: |
-            git add package.json package-lock.json
+            git add package.json package-lock.json jsr.json
             git commit -m "ci: publish version $(npm pkg get version | tr -d '\n')"
             git push
         env:
