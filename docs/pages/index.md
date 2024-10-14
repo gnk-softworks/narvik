@@ -6,6 +6,8 @@ title: "Narvik Authentication Library Documentation"
 
 [![npm version](https://badge.fury.io/js/narvik.svg)](https://badge.fury.io/js/narvik)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![JSR](https://jsr.io/badges/@narvik/narvik)](https://jsr.io/@narvik/narvik)
+[![Coverage Status](https://coveralls.io/repos/github/gnk-softworks/narvik/badge.svg?branch=main)](https://coveralls.io/github/gnk-softworks/narvik?branch=main)
 
 ## Introduction
 Narvik is a server side authentication library that abstracts away the complexity of managing sessions using an API that's easy to use, understand, and extend. It works independent of your chosen database setup, is built with TypeScript and released under the CC0 license.
