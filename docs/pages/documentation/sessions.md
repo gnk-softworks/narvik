@@ -63,7 +63,7 @@ Some frameworks may not allow you to set a new session cookie every time. In fut
 const validatedSession = await narvik.validateSession(sessionToken);
 
 if (session && (session.new || session.extended)) {
-	// set session cookie
+    // set session cookie
 }
 ```
 
