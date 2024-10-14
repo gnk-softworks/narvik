@@ -18,6 +18,7 @@ Narvik is a server side authentication library that abstracts away the complexit
 
 ## Next Steps
 - Follow the [Getting Started](/getting-started/setup) guide to start using Narvik in your project.
+- If you are using NextJS (App Router), see the [NextJS (App Router) Guide](/guides/nextjs-app-router).
 
 ## Mentions
 Although this library has been implemented from scratch, Narvik draws inspiration from the Lucia authentication library and makes use of oslojs. Both of these projects (and the framework this documentation site uses) were created by [@PilcrowOnPaper](https://github.com/pilcrowOnPaper). He has done a great job in creating these and many more resources that are the place to start for anyone looking to build a secure and reliable authentication system.
