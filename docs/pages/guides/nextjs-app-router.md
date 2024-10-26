@@ -149,6 +149,8 @@ export const endSession = async () => {
 }
 ```
 
+> Note: In NextJS v15 and above the cookies function has become async and you will need to use `await cookies()` instead of `cookies()`. You can read more about this in the [NextJS documentation](https://nextjs.org/blog/next-15#async-request-apis-breaking-change).
+
 ## Usage
 Now that you have set up Narvik and the helper functions you can use the `getUser`, `startSession` and `endSession` functions in your NextJS pages to create and manage sessions for authenticated users.
 
