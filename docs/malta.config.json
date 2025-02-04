@@ -23,6 +23,7 @@
       "title": "Guides",
       "pages": [
           ["NextJS (App Router)", "/guides/nextjs-app-router"],
+          ["Sveltekit (Preview)", "/guides/sveltekit"],
           ["Additional/Custom Session Data", "/guides/additional-session-data"],
           ["Community Datastore Adapters", "/guides/community-datastore-adapters"],
           ["Migrate from Lucia (Coming Soon)", "/guides/lucia"]
