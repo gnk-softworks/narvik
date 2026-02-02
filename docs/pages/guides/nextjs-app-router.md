@@ -60,7 +60,7 @@ export const narvik = new Narvik({
         deleteSessionsForUser: async (userId: string): Promise<void> => {
             // Enables the 'deleteSessionsForUser' on Narvik - Used to Delete all sessions for a user from your database
         },
-        deleteAllExpiredSessions: (): Promise<void> => {
+        deleteAllExpiredSessions: async (): Promise<void> => {
             // Enables the 'deleteAllExpiredSessions' on Narvik - Used to Delete all expired sessions from your database. Some databases offer built-in TTL functionality that can handle this automatically which may be preferable.
         }
     },
@@ -114,7 +114,7 @@ export const getUser = cache(
             }
 
             // Fetch the user from your database using your existing user fetching implementation
-            user = await getUserByUsername(session.userId) || null;
+            user = await getUserById(session.userId) || null;
         } catch {
             // Catch as Next.js doesn't allow the setting of cookies when rendering pages.
         }
@@ -142,7 +142,10 @@ Invalidates the user session and removes the session cookie. Use this when the u
 export const endSession = async () => {
     const sessionToken = cookies().get(narvik.cookieName)?.value ?? null;
     if (sessionToken) {
-        await narvik.invalidateSession(sessionToken);
+        const session = await narvik.validateSession(sessionToken);
+        if (session) {
+            await narvik.invalidateSession(session.id);
+        }
         const cookie = narvik.createBlankCookie();
         cookies().set(cookie.name, cookie.value, cookie.attributes);
     }
@@ -200,7 +203,7 @@ The following is an example of how you might use the `getUser` function to authe
 
 ```tsx
 export default async function Home() {
-    const {user} = await getUser();
+    const user = await getUser();
     if (!user) {
         return redirect("/login");
     }
@@ -223,10 +226,10 @@ The following is an example of how you might use the `getUser` function to authe
 > Failure to check permissions could result in sensitive data being exposed to unauthorised users.
 
 ```tsx
-async function getNumberOfSalesForAccount(accountId: string): Promise<> {
+async function getNumberOfSalesForAccount(accountId: string): Promise<number | { error: string }> {
     "use server";
     // Get the user from the session, if the user is not authenticated redirect to the login page
-    const {user} = await getUser();
+    const user = await getUser();
     if (!user) {
         redirect("/login");
     }
@@ -244,7 +247,7 @@ async function getNumberOfSalesForAccount(accountId: string): Promise<> {
 ```
 
 ## A Note on CSRF Protection
-In Next.js, Server Actions provide a level of protection against CSRF attacks. You can read more about this (here)[https://nextjs.org/blog/security-nextjs-server-components-actions#csrf].
+In Next.js, Server Actions provide a level of protection against CSRF attacks. You can read more about this [here](https://nextjs.org/blog/security-nextjs-server-components-actions#csrf).
 
 For Custom Route Handlers (route.tsx), CSRF protection needs to be implemented manually. Traditional methods like CSRF tokens or header validation should be used to secure these routes.
 

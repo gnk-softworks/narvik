@@ -84,7 +84,7 @@ const authenticatedUser = {
 const createSessionReult = await narvik.createSession(authenticatedUser.id);
 
 //Create a cookie to store the session
-const cookie = narvik.createSessionCookie(createSessionReult.token);
+const cookie = narvik.createCookie(createSessionReult.token);
 cookies().set(cookie.name, cookie.value, cookie.attributes);
 
 //Fetch the session from the database
@@ -95,7 +95,7 @@ if(!sessionToken) {
 const validatedSession = await narvik.validateSession(sessionToken); //Returns Session if valid or null if session is invalid
 
 //Create a blank cookie to clear the session
-const blankCookie = narvik.createBlankSessionCookie();
+const blankCookie = narvik.createBlankCookie();
 ```
 
 ## Further documentation an examples

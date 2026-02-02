@@ -16,10 +16,10 @@ const authenticatedUser = {
 };
 
 //Create a new session for the authenticated user
-const createSessionReult = await narvik.createSession(authenticatedUser.id);
+const createSessionResult = await narvik.createSession(authenticatedUser.id);
 
 //Create a cookie to store the session
-const cookie = narvik.createSessionCookie(createSessionReult.token);
+const cookie = narvik.createCookie(createSessionResult.token);
 
 //TODO: Set the cookie to store the session. Use thecookie name stored in narvik.cookieName
 ```
@@ -36,11 +36,14 @@ const validatedSession = await narvik.validateSession(sessionToken); //Returns S
 
 ### Invalidating a Session and Clearing the Cookie
 ```ts
+//Fetch the session cookie from the request. Use the cookie name stored in narvik.cookieName
+const sessionId = validatedSession.id;
+
 //Invalidate the session
-narvik.invalidateSession(sessionId);
+await narvik.invalidateSession(sessionId);
 
 //Create a blank cookie to clear the session
-const blankCookie = narvik.createBlankSessionCookie();
+const blankCookie = narvik.createBlankCookie();
 
 //TODO: Set the cookie to clear the session
 ```

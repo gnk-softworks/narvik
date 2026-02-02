@@ -32,7 +32,7 @@ email: "john.smith@your-app-name.com"
 };
 
 //Create a new session for the authenticated user
-const createSessionReult: CreateSessionResult = await narvik.createSession(authenticatedUser.id);
+const createSessionResult: CreateSessionResult = await narvik.createSession(authenticatedUser.id);
 
 //Set the session cookie
 ```
@@ -77,8 +77,8 @@ To get the session id you will need to extract it from the session returned by `
 await narvik.invalidateSession(sessionId);
 ```
 
-## Other useful session functions you should implement outside of Narvik
-For management of sessions in your database, you should implement the following functions for use in other places in your application:
+## Further Session Management
+For further management of sessions in your database, you should implement the following optional functions which can be passed to Narvik for use in other places in your application:
 - Get all sessions for a user - Useful for showing a user all of their active sessions
 - Delete sessions for a user - Useful for when a user changes their password
 - Delete all expired sessions - Useful for cleaning up your database although some databases have built-in TTL functionality which can be used instead.

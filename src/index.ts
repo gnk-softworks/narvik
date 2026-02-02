@@ -113,21 +113,21 @@ export class Narvik {
 
     public async fetchSessionsForUser(userId: string): Promise<Session[]> {
         if (!this.data.fetchSessionsForUser) {
-            throw new Error("fetchSessionsForUser callback provided in configuration");
+            throw new Error("fetchSessionsForUser callback not provided in configuration");
         }
         return await this.data.fetchSessionsForUser(userId);
     }
 
     public async deleteSessionsForUser(userId: string): Promise<void> {
         if (!this.data.deleteSessionsForUser) {
-            throw new Error("deleteSessionsForUser callback provided in configuration");
+            throw new Error("deleteSessionsForUser callback not provided in configuration");
         }
         return await this.data.deleteSessionsForUser(userId);
     }
 
     public async deleteAllExpiredSessions(): Promise<void> {
         if (!this.data.deleteAllExpiredSessions) {
-            throw new Error("deleteAllExpiredSessions callback provided in configuration");
+            throw new Error("deleteAllExpiredSessions callback not provided in configuration");
         }
         return await this.data.deleteAllExpiredSessions();
     }

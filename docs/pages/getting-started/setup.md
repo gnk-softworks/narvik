@@ -52,7 +52,7 @@ export const narvik = new Narvik({
         deleteSessionsForUser: async (userId: string): Promise<void> => {
             // Enables the 'deleteSessionsForUser' on Narvik - Used to Delete all sessions for a user from your database
         },
-        deleteAllExpiredSessions: (): Promise<void> => {
+        deleteAllExpiredSessions: async (): Promise<void> => {
             // Enables the 'deleteAllExpiredSessions' on Narvik - Used to Delete all expired sessions from your database. Some databases offer built-in TTL functionality that can handle this automatically which may be preferable.
         }
     }

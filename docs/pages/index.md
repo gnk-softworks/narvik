@@ -26,4 +26,4 @@ Narvik is a server side authentication library that abstracts away the complexit
 Although this library has been implemented from scratch, Narvik draws inspiration from the Lucia authentication library and makes use of oslojs. Both of these projects (and the framework this documentation site uses) were created by [@PilcrowOnPaper](https://github.com/pilcrowOnPaper). He has done a great job in creating these and many more resources that are the place to start for anyone looking to build a secure and reliable authentication system.
 
 ## Contributions
-If you want to contribute to this project, please see the [how to contribute](/contribute) page.
+If you want to contribute to this project, please see the [how to contribute](/contributing) page.
