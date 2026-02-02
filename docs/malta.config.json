@@ -24,6 +24,7 @@
       "pages": [
           ["NextJS (App Router)", "/guides/nextjs-app-router"],
           ["NextJS (Pages Router)", "/guides/nextjs-pages-router"],
+          ["Express", "/guides/express"],
           ["Sveltekit (Preview)", "/guides/sveltekit"],
           ["Additional/Custom Session Data", "/guides/additional-session-data"],
           ["Community Datastore Adapters", "/guides/community-datastore-adapters"],
