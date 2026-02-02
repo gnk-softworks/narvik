@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
-    "coverage": "vitest run --coverage --reporter=basic --outputFile=./test-output.json",
+    "coverage": "vitest run --coverage --reporter=json --outputFile=./test-output.json",
     "docs-dev": "cd docs && malta dev"
   },
   "files": [
@@ -42,8 +42,8 @@
     "@oslojs/encoding": "^1.1.0"
   },
   "devDependencies": {
-    "@vitest/coverage-istanbul": "^2.1.2",
+    "@vitest/coverage-istanbul": "^4.0.18",
     "typescript": "^5.4.5",
-    "vitest": "^2.1.2"
+    "vitest": "^4.0.18"
   }
 }
