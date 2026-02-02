@@ -5,18 +5,18 @@ title: "Cookies"
 # Cookies
 Once a session is created, you may want to store the token in a session cookie. Narvik offers two helper functions to easily format session data for use in a session cookie:
 
-### createSessionCookie()
-The `createSessionCookie` function takes a session token and returns a cookie object that can be used to easily set a cookie in your framework of choice.
+### createCookie()
+The `createCookie` function takes a session token and returns a cookie object that can be used to easily set a cookie in your framework of choice.
 ```ts
-const cookie = narvik.createSessionCookie(sessionToken);
+const cookie = narvik.createCookie(sessionToken);
 ```
 
 > Note: By default, the `Max Age` attribute is set to match the session expiry time. If you need the cookie to expire at a different time, you can configure this by setting the `cookieExpiresInMs` option in the Narvik config. This is particularly helpful if your framework doesn’t allow you to set or update the cookie in all locations where you validate and extend the session.
 
-### createBlankSessionCookie()
-The `createBlankSessionCookie` function returns a blank cookie object that can be used to easily clear a session cookie in your framework of choice.
+### createBlankCookie()
+The `createBlankCookie` function returns a blank cookie object that can be used to easily clear a session cookie in your framework of choice.
 ```ts
-const blankCookie = narvik.createBlankSessionCookie();
+const blankCookie = narvik.createBlankCookie();
 ```
 
 ## Cookie Object
@@ -51,7 +51,7 @@ export interface CookieAttributes {
 
 The `serialize` method is used to convert the cookie object into a string that can be set as a cookie using 'Set-Cookie' headers.
 ```ts
-const cookie = narvik.createSessionCookie(sessionToken);
+const cookie = narvik.createCookie(sessionToken);
 const cookieString = cookie.serialize();
 
 // Set the cookie in the response headers

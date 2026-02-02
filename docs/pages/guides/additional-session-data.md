@@ -41,7 +41,7 @@ const authenticatedUser = {
 };
 
 //Create a new session for the authenticated user
-const createSessionReult = await narvik.createSession(authenticatedUser.id, {
+const createSessionResult = await narvik.createSession(authenticatedUser.id, {
     username: authenticatedUser.username
 });
 ```

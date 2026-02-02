@@ -42,7 +42,7 @@ export const narvik = new Narvik({
         deleteSessionsForUser: async (userId: string): Promise<void> => {
             // Enables the 'deleteSessionsForUser' on Narvik - Used to Delete all sessions for a user from your database
         },
-        deleteAllExpiredSessions: (): Promise<void> => {
+        deleteAllExpiredSessions: async (): Promise<void> => {
             // Enables the 'deleteAllExpiredSessions' on Narvik - Used to Delete all expired sessions from your database. Some databases offer built-in TTL functionality that can handle this automatically which may be preferable.
         }
     },
@@ -65,7 +65,7 @@ import { narvik } from "$lib/server/auth";
 import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-    const sessionToken = event.cookies.get(narvik.sessionCookieName);
+    const sessionToken = event.cookies.get(narvik.cookieName);
     if (!sessionToken) {
         event.locals.user = null;
         event.locals.session = null;
@@ -73,7 +73,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     const session = await narvik.validateSession(sessionToken);
-	if (session && session.fresh) {
+	if (session && (session.new || session.extended)) {
 		const sessionCookie = narvik.createCookie(sessionToken);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: ".",
@@ -94,19 +94,20 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.session = session;
 	return resolve(event);
 };
+```
 
 Make sure to type App.Locals as well.
+```ts
 // src/app.d.ts
 declare global {
     namespace App {
-    interface Locals {
-    user: User | null; // User type should be imported from your project
-    session: import("narvik").Session | null;
-}
-}
+        interface Locals {
+            user: User | null; // User type should be imported from your project
+            session: import("narvik").Session | null;
+        }
+    }
 }
 ```
-
 
 ## Next steps
 - You can read through the documentation & getting started guide to learn more about Narvik.
