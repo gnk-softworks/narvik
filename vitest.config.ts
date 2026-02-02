@@ -5,6 +5,7 @@ export default defineConfig({
         // Enable coverage reporting
         coverage: {
             provider: 'istanbul', // Use Istanbul for coverage
+            exclude: ['test/**'],
             reporter: [
                 'lcovonly', // Output coverage to coverage/lcov.info
                 'text', // Output coverage to console

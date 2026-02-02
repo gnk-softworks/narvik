@@ -269,15 +269,15 @@ test('unset optional callbacks throw errors', async () => {
 
     await expect((async () => {
         await narvik.fetchSessionsForUser(userId);
-    })()).rejects.toThrowError('fetchSessionsForUser callback provided in configuration');
+    })()).rejects.toThrowError('fetchSessionsForUser callback not provided in configuration');
 
     await expect((async () => {
         await narvik.deleteSessionsForUser(userId);
-    })()).rejects.toThrowError('deleteSessionsForUser callback provided in configuration');
+    })()).rejects.toThrowError('deleteSessionsForUser callback not provided in configuration');
 
     await expect((async () => {
         await narvik.deleteAllExpiredSessions();
-    })()).rejects.toThrowError('deleteAllExpiredSessions callback provided in configuration');
+    })()).rejects.toThrowError('deleteAllExpiredSessions callback not provided in configuration');
 })
 
 test('Fetch Sessions for User', async () => {
