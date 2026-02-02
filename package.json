@@ -1,6 +1,6 @@
 {
   "name": "narvik",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "A simple, session based authentication library",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
