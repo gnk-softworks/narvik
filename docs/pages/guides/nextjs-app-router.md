@@ -26,11 +26,11 @@ npm i narvik
 Create a new file in the `src` directory of your project called `auth.ts`. Within this file you will need to initialise a new instance of Narvik.
 
 When initialising Narvik for use with NextJS you will need to provide a few bits of configuration:
-1. Implementations of the data required management callbacks to save, fetch, update and delete sessions from your database.
+1. Implementations of the required data management callbacks to save, fetch, update and delete sessions from your database.
 2. OPTIONAL: Implementations of additional callbacks to fetch all sessions for a user, delete all sessions for a user and delete all expired sessions.
 3. Configuration for the cookies that Narvik will use to store session tokens.
 
-> Note: For more information on the data management callbacks, what the session object looks like and how to extend the session object with additional data, see the [Session](/documentation/session) and [Session Storage](/documentation/session-storage) pages.
+> Note: For more information on the data management callbacks, what the session object looks like and how to extend the session object with additional data, see the [Sessions](/documentation/sessions) and [Session Storage](/documentation/session-storage) pages.
 
 Here is an example of what that file might look like:
 
@@ -80,7 +80,7 @@ export const narvik = new Narvik({
 });
 ```
 
-Once you have set up your `auth.ts` file and implemented to the required callbacks you can move on the the next step!
+Once you have set up your `auth.ts` file and implemented the required callbacks you can move on to the next step!
 
 ## Helper functions
 To make validating a request and getting user data easier we recommend you implement and export the following helper functions from your `auth.ts` file.

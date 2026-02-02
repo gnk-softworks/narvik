@@ -21,7 +21,7 @@ const createSessionResult = await narvik.createSession(authenticatedUser.id);
 //Create a cookie to store the session
 const cookie = narvik.createCookie(createSessionResult.token);
 
-//TODO: Set the cookie to store the session. Use thecookie name stored in narvik.cookieName
+//TODO: Set the cookie to store the session. Use the cookie name stored in narvik.cookieName
 ```
 
 

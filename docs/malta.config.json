@@ -27,9 +27,10 @@
           ["Express", "/guides/express"],
           ["Sveltekit (Preview)", "/guides/sveltekit"],
           ["Additional/Custom Session Data", "/guides/additional-session-data"],
-          ["Community Datastore Adapters", "/guides/community-datastore-adapters"],
-          ["Migrate from Lucia (Coming Soon)", "/guides/lucia"]
-
+          [
+            "Community Datastore Adapters",
+            "/guides/community-datastore-adapters"
+          ]
       ]
     },
     {
